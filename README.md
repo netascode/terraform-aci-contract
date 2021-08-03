@@ -1,22 +1,37 @@
 <!-- BEGIN_TF_DOCS -->
-[![Tests](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-scaffolding/actions/workflows/test.yml)
+[![Tests](https://github.com/netascode/terraform-aci-contract/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-contract/actions/workflows/test.yml)
 
-# Terraform ACI Scaffolding Module
+# Terraform ACI Contract Module
 
-Description
+Manages ACI Contract
 
 Location in GUI:
-`Tenants` » `XXX`
+`Tenants` » `XXX` » `Contracts` » `Standard`
 
 ## Examples
 
 ```hcl
-module "aci_scaffolding" {
-  source = "netascode/scaffolding/aci"
+module "aci_contract" {
+  source = "netascode/contract/aci"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
+  tenant      = "ABC"
+  name        = "CON1"
+  alias       = "CON1-ALIAS"
   description = "My Description"
+  scope       = "global"
+  subjects = [{
+    name          = "SUB1"
+    alias         = "SUB1-ALIAS"
+    description   = "Subject Description"
+    service_graph = "SG1"
+    filters = [{
+      filter   = "FILTER1"
+      action   = "deny"
+      priority = "level1"
+      log      = true
+      no_stats = true
+    }]
+  }]
 }
 
 ```
@@ -38,20 +53,26 @@ module "aci_scaffolding" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | Tenant name. | `string` | n/a | yes |
-| <a name="input_alias"></a> [alias](#input\_alias) | Tenant alias. | `string` | `""` | no |
-| <a name="input_description"></a> [description](#input\_description) | Tenant description. | `string` | `""` | no |
+| <a name="input_tenant"></a> [tenant](#input\_tenant) | Tenant name. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | Contract name. | `string` | n/a | yes |
+| <a name="input_alias"></a> [alias](#input\_alias) | Contract alias. | `string` | `""` | no |
+| <a name="input_description"></a> [description](#input\_description) | Contract description. | `string` | `""` | no |
+| <a name="input_scope"></a> [scope](#input\_scope) | Contract scope. Choices: `application-profile`, `tenant`, `context`, `global`. | `string` | `"context"` | no |
+| <a name="input_subjects"></a> [subjects](#input\_subjects) | List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`. | <pre>list(object({<br>    name          = string<br>    alias         = optional(string)<br>    description   = optional(string)<br>    service_graph = optional(string)<br>    filters = optional(list(object({<br>      filter   = string<br>      action   = optional(string)<br>      priority = optional(string)<br>      log      = optional(bool)<br>      no_stats = optional(bool)<br>    })))<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `fvTenant` object. |
-| <a name="output_name"></a> [name](#output\_name) | Tenant name. |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `vzBrCP` object. |
+| <a name="output_name"></a> [name](#output\_name) | Contract name. |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aci_rest.fvTenant](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.vzBrCP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.vzRsSubjFiltAtt](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.vzRsSubjGraphAtt](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.vzSubj](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 <!-- END_TF_DOCS -->
