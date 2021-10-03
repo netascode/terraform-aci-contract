@@ -12,7 +12,8 @@ Location in GUI:
 
 ```hcl
 module "aci_contract" {
-  source = "netascode/contract/aci"
+  source  = "netascode/contract/aci"
+  version = ">= 0.0.1"
 
   tenant      = "ABC"
   name        = "CON1"
