@@ -39,7 +39,7 @@ resource "aci_rest" "vzSubj" {
 
 resource "aci_rest" "vzRsSubjFiltAtt" {
   for_each   = { for filter in local.subj_filter_list : filter.id => filter }
-  dn         = "${aci_rest.vzSubj[each.value.subj].id}/rssubjFiltAtt-${each.value.filter}"
+  dn         = "${aci_rest.vzSubj[each.value.subj].dn}/rssubjFiltAtt-${each.value.filter}"
   class_name = "vzRsSubjFiltAtt"
   content = {
     action           = each.value.action
@@ -51,7 +51,7 @@ resource "aci_rest" "vzRsSubjFiltAtt" {
 
 resource "aci_rest" "vzRsSubjGraphAtt" {
   for_each   = { for subj in var.subjects : subj.name => subj }
-  dn         = "${aci_rest.vzSubj[each.key].id}/rsSubjGraphAtt"
+  dn         = "${aci_rest.vzSubj[each.key].dn}/rsSubjGraphAtt"
   class_name = "vzRsSubjGraphAtt"
   content = {
     tnVnsAbsGraphName = each.value.service_graph
