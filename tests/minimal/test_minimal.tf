@@ -5,13 +5,13 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
 
-resource "aci_rest" "fvTenant" {
+resource "aci_rest_managed" "fvTenant" {
   dn         = "uni/tn-TF"
   class_name = "fvTenant"
 }
@@ -19,11 +19,11 @@ resource "aci_rest" "fvTenant" {
 module "main" {
   source = "../.."
 
-  tenant = aci_rest.fvTenant.content.name
+  tenant = aci_rest_managed.fvTenant.content.name
   name   = "CON1"
 }
 
-data "aci_rest" "vzBrCP" {
+data "aci_rest_managed" "vzBrCP" {
   dn = module.main.dn
 
   depends_on = [module.main]
@@ -34,7 +34,7 @@ resource "test_assertions" "vzBrCP" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.vzBrCP.content.name
+    got         = data.aci_rest_managed.vzBrCP.content.name
     want        = module.main.name
   }
 }

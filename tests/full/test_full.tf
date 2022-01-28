@@ -5,13 +5,13 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
 
-resource "aci_rest" "fvTenant" {
+resource "aci_rest_managed" "fvTenant" {
   dn         = "uni/tn-TF"
   class_name = "fvTenant"
 }
@@ -19,7 +19,7 @@ resource "aci_rest" "fvTenant" {
 module "main" {
   source = "../.."
 
-  tenant      = aci_rest.fvTenant.content.name
+  tenant      = aci_rest_managed.fvTenant.content.name
   name        = "CON1"
   alias       = "CON1-ALIAS"
   description = "My Description"
@@ -39,7 +39,7 @@ module "main" {
   }]
 }
 
-data "aci_rest" "vzBrCP" {
+data "aci_rest_managed" "vzBrCP" {
   dn = module.main.dn
 
   depends_on = [module.main]
@@ -50,31 +50,31 @@ resource "test_assertions" "vzBrCP" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.vzBrCP.content.name
+    got         = data.aci_rest_managed.vzBrCP.content.name
     want        = module.main.name
   }
 
   equal "nameAlias" {
     description = "nameAlias"
-    got         = data.aci_rest.vzBrCP.content.nameAlias
+    got         = data.aci_rest_managed.vzBrCP.content.nameAlias
     want        = "CON1-ALIAS"
   }
 
   equal "descr" {
     description = "descr"
-    got         = data.aci_rest.vzBrCP.content.descr
+    got         = data.aci_rest_managed.vzBrCP.content.descr
     want        = "My Description"
   }
 
   equal "scope" {
     description = "scope"
-    got         = data.aci_rest.vzBrCP.content.scope
+    got         = data.aci_rest_managed.vzBrCP.content.scope
     want        = "global"
   }
 }
 
-data "aci_rest" "vzSubj" {
-  dn = "${data.aci_rest.vzBrCP.id}/subj-SUB1"
+data "aci_rest_managed" "vzSubj" {
+  dn = "${data.aci_rest_managed.vzBrCP.id}/subj-SUB1"
 
   depends_on = [module.main]
 }
@@ -84,31 +84,31 @@ resource "test_assertions" "vzSubj" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.vzSubj.content.name
+    got         = data.aci_rest_managed.vzSubj.content.name
     want        = "SUB1"
   }
 
   equal "nameAlias" {
     description = "nameAlias"
-    got         = data.aci_rest.vzSubj.content.nameAlias
+    got         = data.aci_rest_managed.vzSubj.content.nameAlias
     want        = "SUB1-ALIAS"
   }
 
   equal "descr" {
     description = "descr"
-    got         = data.aci_rest.vzSubj.content.descr
+    got         = data.aci_rest_managed.vzSubj.content.descr
     want        = "Subject Description"
   }
 
   equal "revFltPorts" {
     description = "revFltPorts"
-    got         = data.aci_rest.vzSubj.content.revFltPorts
+    got         = data.aci_rest_managed.vzSubj.content.revFltPorts
     want        = "yes"
   }
 }
 
-data "aci_rest" "vzRsSubjFiltAtt" {
-  dn = "${data.aci_rest.vzSubj.id}/rssubjFiltAtt-FILTER1"
+data "aci_rest_managed" "vzRsSubjFiltAtt" {
+  dn = "${data.aci_rest_managed.vzSubj.id}/rssubjFiltAtt-FILTER1"
 
   depends_on = [module.main]
 }
@@ -118,31 +118,31 @@ resource "test_assertions" "vzRsSubjFiltAtt" {
 
   equal "action" {
     description = "action"
-    got         = data.aci_rest.vzRsSubjFiltAtt.content.action
+    got         = data.aci_rest_managed.vzRsSubjFiltAtt.content.action
     want        = "deny"
   }
 
   equal "tnVzFilterName" {
     description = "tnVzFilterName"
-    got         = data.aci_rest.vzRsSubjFiltAtt.content.tnVzFilterName
+    got         = data.aci_rest_managed.vzRsSubjFiltAtt.content.tnVzFilterName
     want        = "FILTER1"
   }
 
   equal "directives" {
     description = "directives"
-    got         = data.aci_rest.vzRsSubjFiltAtt.content.directives
+    got         = data.aci_rest_managed.vzRsSubjFiltAtt.content.directives
     want        = "log,no_stats"
   }
 
   equal "priorityOverride" {
     description = "priorityOverride"
-    got         = data.aci_rest.vzRsSubjFiltAtt.content.priorityOverride
+    got         = data.aci_rest_managed.vzRsSubjFiltAtt.content.priorityOverride
     want        = "level1"
   }
 }
 
-data "aci_rest" "vzRsSubjGraphAtt" {
-  dn = "${data.aci_rest.vzSubj.id}/rsSubjGraphAtt"
+data "aci_rest_managed" "vzRsSubjGraphAtt" {
+  dn = "${data.aci_rest_managed.vzSubj.id}/rsSubjGraphAtt"
 
   depends_on = [module.main]
 }
@@ -152,7 +152,7 @@ resource "test_assertions" "vzRsSubjGraphAtt" {
 
   equal "tnVnsAbsGraphName" {
     description = "tnVnsAbsGraphName"
-    got         = data.aci_rest.vzRsSubjGraphAtt.content.tnVnsAbsGraphName
+    got         = data.aci_rest_managed.vzRsSubjGraphAtt.content.tnVnsAbsGraphName
     want        = "SG1"
   }
 }
