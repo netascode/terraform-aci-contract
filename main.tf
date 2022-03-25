@@ -50,7 +50,7 @@ resource "aci_rest_managed" "vzRsSubjFiltAtt" {
 }
 
 resource "aci_rest_managed" "vzRsSubjGraphAtt" {
-  for_each   = { for subj in var.subjects : subj.name => subj }
+  for_each   = { for subj in var.subjects : subj.name => subj if subj.service_graph != null }
   dn         = "${aci_rest_managed.vzSubj[each.key].dn}/rsSubjGraphAtt"
   class_name = "vzRsSubjGraphAtt"
   content = {

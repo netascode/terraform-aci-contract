@@ -1,3 +1,7 @@
+## 0.1.1
+
+- FIX: Only create vzRsSubjGraphAtt object if service_graph defined
+
 ## 0.1.0
 
 - Migrate to devnet provider
