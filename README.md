@@ -13,7 +13,7 @@ Location in GUI:
 ```hcl
 module "aci_contract" {
   source  = "netascode/contract/aci"
-  version = ">= 0.1.0"
+  version = ">= 0.2.0"
 
   tenant      = "ABC"
   name        = "CON1"
@@ -40,7 +40,7 @@ module "aci_contract" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
@@ -58,7 +58,7 @@ module "aci_contract" {
 | <a name="input_alias"></a> [alias](#input\_alias) | Contract alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | Contract description. | `string` | `""` | no |
 | <a name="input_scope"></a> [scope](#input\_scope) | Contract scope. Choices: `application-profile`, `tenant`, `context`, `global`. | `string` | `"context"` | no |
-| <a name="input_subjects"></a> [subjects](#input\_subjects) | List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`. | <pre>list(object({<br>    name          = string<br>    alias         = optional(string)<br>    description   = optional(string)<br>    service_graph = optional(string)<br>    filters = optional(list(object({<br>      filter   = string<br>      action   = optional(string)<br>      priority = optional(string)<br>      log      = optional(bool)<br>      no_stats = optional(bool)<br>    })))<br>  }))</pre> | `[]` | no |
+| <a name="input_subjects"></a> [subjects](#input\_subjects) | List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`. | <pre>list(object({<br>    name          = string<br>    alias         = optional(string, "")<br>    description   = optional(string, "")<br>    service_graph = optional(string)<br>    filters = optional(list(object({<br>      filter   = string<br>      action   = optional(string, "permit")<br>      priority = optional(string, "default")<br>      log      = optional(bool, false)<br>      no_stats = optional(bool, false)<br>    })), [])<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

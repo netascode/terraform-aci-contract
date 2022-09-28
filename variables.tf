@@ -55,16 +55,16 @@ variable "subjects" {
   description = "List of contract subjects. Choices `action`: `permit`, `deny`. Default value `action`: `permit`. Choices `priority`: `default`, `level1`, `level2`, `level3`. Default value `priority`: `default`. Default value `log`: `false`. Default value `no_stats`: `false`."
   type = list(object({
     name          = string
-    alias         = optional(string)
-    description   = optional(string)
+    alias         = optional(string, "")
+    description   = optional(string, "")
     service_graph = optional(string)
     filters = optional(list(object({
       filter   = string
-      action   = optional(string)
-      priority = optional(string)
-      log      = optional(bool)
-      no_stats = optional(bool)
-    })))
+      action   = optional(string, "permit")
+      priority = optional(string, "default")
+      log      = optional(bool, false)
+      no_stats = optional(bool, false)
+    })), [])
   }))
   default = []
 

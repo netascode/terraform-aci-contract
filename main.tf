@@ -6,9 +6,9 @@ locals {
         id         = "${subj.name}-${flt.filter}"
         subj       = subj.name
         filter     = flt.filter
-        action     = flt.action != null ? flt.action : "permit"
+        action     = flt.action
         directives = join(",", concat(flt.log == true ? ["log"] : [], flt.no_stats == true ? ["no_stats"] : []))
-        priority   = flt.priority != null ? flt.priority : "default"
+        priority   = flt.priority
       }
     ]
   ])
