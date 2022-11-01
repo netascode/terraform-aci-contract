@@ -27,7 +27,7 @@ module "main" {
   description = "My Description"
   scope       = "global"
   qos_class   = "level4"
-  dscp_target = "CS0"
+  target_dscp = "CS0"
   subjects = [{
     name          = "SUB1"
     alias         = "SUB1-ALIAS"
