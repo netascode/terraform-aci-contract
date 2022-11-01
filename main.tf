@@ -23,7 +23,7 @@ resource "aci_rest_managed" "vzBrCP" {
     descr      = var.description
     scope      = var.scope
     prio       = var.qos_class
-    targetDscp = target_dscp
+    targetDscp = var.target_dscp
   }
 }
 
