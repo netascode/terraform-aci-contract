@@ -26,11 +26,15 @@ module "main" {
   alias       = "CON1-ALIAS"
   description = "My Description"
   scope       = "global"
+  qos_class   = "level4"
+  target_dscp = "CS0"
   subjects = [{
     name          = "SUB1"
     alias         = "SUB1-ALIAS"
     description   = "Subject Description"
     service_graph = "SG1"
+    qos_class     = "level5"
+    target_dscp   = "CS1"
     filters = [{
       filter   = "FILTER1"
       action   = "deny"
@@ -73,6 +77,18 @@ resource "test_assertions" "vzBrCP" {
     got         = data.aci_rest_managed.vzBrCP.content.scope
     want        = "global"
   }
+
+  equal "prio" {
+    description = "prio"
+    got         = data.aci_rest_managed.vzBrCP.content.prio
+    want        = "level4"
+  }
+
+  equal "targetDscp" {
+    description = "targetDscp"
+    got         = data.aci_rest_managed.vzBrCP.content.targetDscp
+    want        = "CS0"
+  }
 }
 
 data "aci_rest_managed" "vzSubj" {
@@ -106,6 +122,18 @@ resource "test_assertions" "vzSubj" {
     description = "revFltPorts"
     got         = data.aci_rest_managed.vzSubj.content.revFltPorts
     want        = "yes"
+  }
+
+  equal "prio" {
+    description = "prio"
+    got         = data.aci_rest_managed.vzSubj.content.prio
+    want        = "level5"
+  }
+
+  equal "targetDscp" {
+    description = "targetDscp"
+    got         = data.aci_rest_managed.vzSubj.content.targetDscp
+    want        = "CS1"
   }
 }
 

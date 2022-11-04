@@ -18,10 +18,12 @@ resource "aci_rest_managed" "vzBrCP" {
   dn         = "uni/tn-${var.tenant}/brc-${var.name}"
   class_name = "vzBrCP"
   content = {
-    name      = var.name
-    nameAlias = var.alias
-    descr     = var.description
-    scope     = var.scope
+    name       = var.name
+    nameAlias  = var.alias
+    descr      = var.description
+    scope      = var.scope
+    prio       = var.qos_class
+    targetDscp = var.target_dscp
   }
 }
 
@@ -34,6 +36,8 @@ resource "aci_rest_managed" "vzSubj" {
     nameAlias   = each.value.alias
     descr       = each.value.description
     revFltPorts = "yes"
+    prio        = each.value.qos_class
+    targetDscp  = each.value.target_dscp
   }
 }
 
