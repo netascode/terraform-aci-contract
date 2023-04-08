@@ -29,7 +29,7 @@ resource "aci_rest_managed" "vzBrCP" {
 
 resource "aci_rest_managed" "vzSubj" {
   for_each   = { for subj in var.subjects : subj.name => subj }
-  dn         = "${aci_rest_managed.vzBrCP.id}/subj-${each.value.name}"
+  dn         = "${aci_rest_managed.vzBrCP.dn}/subj-${each.value.name}"
   class_name = "vzSubj"
   content = {
     name        = each.value.name

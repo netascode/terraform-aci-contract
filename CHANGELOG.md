@@ -1,3 +1,7 @@
+## 0.2.2 (unreleased)
+
+- Fix resource dependencies
+
 ## 0.2.1
 
 - Add QoS attributes
